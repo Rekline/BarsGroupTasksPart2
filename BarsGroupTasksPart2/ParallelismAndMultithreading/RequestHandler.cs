@@ -40,20 +40,19 @@ namespace BarsGroupTasksPart2
                 }
                 if (taskArg == "/end")
                 {
+                    var requestId = Guid.NewGuid().ToString("D");
+                    Console.WriteLine($"Было отправлено сообщение '{taskText}'. Присвоен идентификатор {requestId}");
                     ThreadPool.QueueUserWorkItem( _ => {
                         try
                         {
                             var requestHandler = new DummyRequestHandler();
                             var requestMessage = requestHandler.HandleRequest(taskText, arguments.ToArray());
-                            Console.WriteLine($"Было отправлено сообщение '{taskText}'. Присвоен идентификатор {requestMessage}");
-                            Thread.Sleep(12000);
-                            Console.WriteLine($"Сообщение с идентификатором {requestMessage} " +
-                                $"получило ответ - {Guid.NewGuid().ToString("D")}.");
+                            Console.WriteLine($"Сообщение с идентификатором {requestId} " +
+                                $"получило ответ - {requestMessage}.");
                         }
                         catch(Exception ex)
                         {
-                            var requestIdWithError = Guid.NewGuid().ToString("D");
-                            Console.WriteLine($"Сообщение с идентификатором {requestIdWithError} упало с ошибкой: {ex}.");
+                            Console.WriteLine($"Сообщение с идентификатором {requestId} упало с ошибкой: {ex.Message}.");
                         }
                     });
                 }
