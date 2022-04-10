@@ -46,14 +46,14 @@ namespace BarsGroupTasksPart2
                 if (taskArg == "/end")
                 {
                     var requestId = Guid.NewGuid().ToString("D");
-                    var argumentsList = new List<string>(arguments);
+                    var argumentsArray = arguments.ToArray(); ;
                     arguments.Clear();
                     Console.WriteLine($"Было отправлено сообщение '{taskText}'. Присвоен идентификатор {requestId}");
                     ThreadPool.QueueUserWorkItem( _ => {
                         try
                         {
                             var requestHandler = new DummyRequestHandler();
-                            var requestMessage = requestHandler.HandleRequest(taskText, argumentsList.ToArray());
+                            var requestMessage = requestHandler.HandleRequest(taskText, argumentsArray);
                             Console.WriteLine($"Сообщение с идентификатором {requestId} " +
                                 $"получило ответ - {requestMessage}.");
                         }
